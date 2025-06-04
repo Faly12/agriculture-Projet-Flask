@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <h2 class="text-center">Our Best Product</h2>
+        {% for graine in graines %}
+        <div class="col-md-3 mb-4 h-75">
+            <div class="card shadow-sm text-center h-100 d-flex flex-column justify-content-between border ">
+                {% if graine[4] %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ graine[4]) }}" 
+                         class="card-img-top img-fluid p-3" 
+                         alt="{{ graine[1] }}" style="height: 100px; object-fit: contain;">
+                {% else %}
+                    <img src="{{ url_for('static', filename='uploads/default.jpg') }}" 
+                         class="card-img-top img-fluid p-3" 
+                         alt="Image non disponible" style="height: 100px; object-fit: contain;">
+                {% endif %}
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <h5 class="card-title">{{ graine[1] }}</h5>
+                    <p class="card-text">Prix : {{ graine[2] }}$/{{ graine[3] }}</p>
+                    <p class="card-text">Categorie : {{ graine[5] }}</p>
+                    <button type="button" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#addToCartModal{{ graine[0] }}">
+                        Ajouter au panier
+                    </button>
+                </div>
+            </div>
+        </div>
+                
+
+        <!-- Modal pour confirmer l'ajout au panier -->
+        <div class="modal fade" id="addToCartModal{{ graine[0] }}" tabindex="-1" aria-labelledby="addToCartModalLabel{{ graine[0] }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form class="add-to-cart-form" action="{{ url_for('ajouter_panier') }}" method="POST">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addToCartModalLabel{{ graine[0] }}">Confirmer l'ajout</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <img src="{{ url_for('static', filename='uploads/' ~ graine[4]) }}" class="img-fluid" style="max-height: 150px;" alt="{{ graine[1] }}">
+                            <p>Voulez-vous ajouter <strong class="text-primary">{{ graine[1] }}</strong> au panier ?</p>
+
+                            <!-- Champs cachés pour transmettre les données -->
+                            <input type="hidden" name="produit_id" value="{{ graine[0] }}">
+                            <input type="hidden" name="nom" value="{{ graine[1] }}">
+                            <input type="hidden" name="prix_unitaire" value="{{ graine[2] }}">
+
+                            <!-- Champ de quantité -->
+                            <div class="mb-3">
+                                <label for="quantite{{ graine[0] }}" class="form-label">Quantité :</label>
+                                <input type="number" class="form-control" id="quantite{{ graine[0] }}" name="quantite" value="1" min="1" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email{{ graine[0] }}" class="form-label">Email :</label>
+                                <input type="email" class="form-control" id="email{{ graine[0] }}" name="email"  required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Oui, ajouter</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="row mt-5">
+    <h4 class="text-center mt-3">Our Gallery</h4>
+    <div class="col-md-4 col-xs-12">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/hoach-le-dinh-c8TWWQ5ZnUw-unsplash.jpg') }}">
+    </div>
+    <div class="col-md-4 col-xs-12">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/gros-plan-d-arachides-non-pelees-isolees-sur-une-surface-blanche.jpg') }}">
+    </div>
+    <div class="col-md-4 col-xs-12">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/graine.JPG') }}">
+    </div>
+    <div class="col-md-4 col-xs-12">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/noix-de-hetre-vue-de-dessus.jpg') }}">
+    </div>
+    <div class="col-md-4 col-xs-12">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/shelley-pauls-t4X660oKiYs-unsplash.jpg') }}">
+    </div>
+    <div class="col-md-4 col-xs-12">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/vue-de-dessus-noix-crues-de-couleur-claire-et-savoureuse-sur-brown-snack-amande-noix-noix.jpg') }}">
+    </div>
+</div>
+{% endblock %}

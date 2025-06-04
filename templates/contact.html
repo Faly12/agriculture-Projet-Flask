@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row d-flex justify-content-evenly gap-2">
+    <!-- Formulaire -->
+    <div class="my-5 col-md-5 rounded-2 shadow text-white p-4 bg-dark">
+        <h2 class="text-center mb-3">Contactez-nous</h2>
+
+        <!-- Message flash -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{ messages[0] }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('contact') }}" method="POST" class="mt-4 needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="nom" class="form-label">Nom complet</label>
+                <input type="text" class="form-control" id="nom" name="nom" required aria-required="true">
+                <div class="invalid-feedback">Veuillez entrer votre nom.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Adresse email</label>
+                <input type="email" class="form-control" id="email" name="email" required aria-required="true">
+                <div class="invalid-feedback">Veuillez entrer une adresse email valide.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="sujet" class="form-label">Sujet</label>
+                <input type="text" class="form-control" id="sujet" name="sujet" required aria-required="true">
+                <div class="invalid-feedback">Veuillez entrer un sujet.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea class="form-control" id="message" name="message" rows="5" maxlength="500" required aria-required="true"></textarea>
+                <div class="invalid-feedback">Veuillez écrire votre message.</div>
+                <small id="charCount" class="form-text text-light">0 / 500 caractères</small>
+            </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" value="" id="notRobot" required>
+                <label class="form-check-label" for="notRobot">Je ne suis pas un robot</label>
+                <div class="invalid-feedback">Veuillez confirmer que vous n'êtes pas un robot.</div>
+            </div>
+
+            <button id="submitBtn" type="submit" class="btn btn-success w-100">
+                <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status" aria-hidden="true"></span>
+                <span id="btnText">Envoyer</span>
+            </button>
+        </form>
+    </div>
+
+    <!-- Carte -->
+    <div class="my-5 col-md-6 rounded-2 shadow text-white p-4 bg-dark">
+        <h2 class="text-center">Notre localisation</h2>
+        <div class="ratio ratio-16x9 mt-3">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.999104236503!2d2.2922923156744065!3d48.85837307928709!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66fdeb5b69329%3A0x9ec9b64edfb35b6b!2sTour%20Eiffel!5e0!3m2!1sfr!2sfr!4v1614119371306!5m2!1sfr!2sfr"
+                style="border:0;" allowfullscreen="" loading="lazy">
+            </iframe>
+        </div>
+    </div>
+</div>
+
+<!-- JS -->
+<script>
+(() => {
+  'use strict'
+  const forms = document.querySelectorAll('.needs-validation')
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      } else {
+        // Affiche spinner et bloque bouton
+        const btn = document.getElementById("submitBtn");
+        const spinner = document.getElementById("spinner");
+        const btnText = document.getElementById("btnText");
+
+        spinner.classList.remove("d-none");
+        btnText.textContent = "Envoi...";
+        btn.disabled = true;
+      }
+      form.classList.add('was-validated')
+    }, false)
+  })
+})();
+
+// Compteur de caractères
+document.getElementById('message').addEventListener('input', function () {
+    const count = this.value.length;
+    document.getElementById('charCount').innerText = `${count} / 500 caractères`;
+});
+</script>
+{% endblock %}

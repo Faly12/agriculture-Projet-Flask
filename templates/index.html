@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <h2 class="text-center">Our Best Product</h2>
+        {% for legume in legumes %}
+        <div class="col-md-3 mb-4 h-75 ">
+            <div class="card shadow-sm h-100 d-flex flex-column justify-content-between border bg-light">
+                <img src="{{ url_for('static', filename='uploads/' ~ legume[4]) }}" 
+                     class="card-img-top img-fluid p-3" 
+                     alt="{{ legume[1] }}" style="height: 120px; object-fit: contain;">
+                <div class="card-body d-flex flex-column justify-content-between text-center">
+                    <h5 class="card-title">{{ legume[1] }}</h5>
+                    <p class="card-text">Prix : {{ legume[2] }}$/{{ legume[3] }}</p>
+                    <p class="card-text">Categorie : {{ legume[5] }}</p>
+                    <!-- Bouton qui ouvre la modale -->
+                    <button type="button" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#addToCartModal{{ legume[0] }}">
+                        Ajouter au panier
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal pour confirmer l'ajout au panier -->
+        <div class="modal fade" id="addToCartModal{{ legume[0] }}" tabindex="-1" aria-labelledby="addToCartModalLabel{{ legume[0] }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form class="add-to-cart-form" action="{{ url_for('ajouter_panier') }}" method="POST">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addToCartModalLabel{{ legume[0] }}">Confirmer l'ajout</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <img src="{{ url_for('static', filename='uploads/' ~ legume[4]) }}" class="img-fluid" style="max-height: 150px;" alt="{{ legume[1] }}">
+                            <p>Voulez-vous ajouter <strong class="text-primary">{{ legume[1] }}</strong> au panier ?</p>
+
+                            <!-- Champs cachés pour transmettre les données -->
+                            <input type="hidden" name="produit_id" value="{{ legume[0] }}">
+                            <input type="hidden" name="nom" value="{{ legume[1] }}">
+                            <input type="hidden" name="prix_unitaire" value="{{ legume[2] }}">
+
+                            <!-- Champ de quantité -->
+                            <div class="mb-3">
+                                <label for="email{{ legume[0] }}" class="form-label">Quantité :</label>
+                                <input type="number" class="form-control" id="quantite{{ legume[0] }}" name="quantite" value="1" min="1" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email{{ legume[0] }}" class="form-label">Email :</label>
+                                <input type="email" class="form-control" id="email{{ legume[0] }}" name="email"  required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Oui, ajouter</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="row mt-5">
+    <h4 class="text-center mt-3">Our Gallery</h4>
+    <div class="col-md-4 col-xs-12">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/image_1.jpg') }}">
+    </div>
+    <div class="col-md-4 col-xs-12">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/andres-carreno-RqS7r2CzL68-unsplash.jpg') }}">
+    </div>
+    <div class="col-md-4 col-xs-12">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/megan-thomas-xMh_ww8HN_Q-unsplash.jpg') }}">
+    </div>
+    <div class="col-md-4 col-xs-12">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/image_4.jpg') }}">
+    </div>
+    <div class="col-md-4 col-xs-12">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/image_7.jpg') }}">
+    </div>
+    <div class="col-md-4 col-xs-12">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/image_6.jpg') }}">
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+    background-color: #51a154;
+}
+
+header.first {
+    position: fixed;
+    z-index: 900;
+    width: 100%;
+}
+header{
+    background-color: #5ca55e;
+}
+.headerNav{
+    position: fixed;
+    z-index: 999;
+    width: 100%;
+    box-shadow: 5px 5px 5px #fff;
+}
+
+.logo {
+    height: 50px;
+}
+
+/* Barre de navigation */
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+nav li a {
+    padding: 0 25px;
+    text-decoration: none;
+    font-size: 18px !important;
+    text-indent: 8px;
+    transition: background-color 0.3s;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+}
+nav li a:hover {
+    border-bottom: 2px white solid;
+    width: auto;
+    transition: 1s;
+}
+/* Formulaires */
+.form {
+    display: flex;
+    flex-direction: column;
+    height: 580px;
+    width: 450px;
+    margin: 50px auto;
+    border-radius: 10px;
+}
+
+button,#submit, #valide {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#submit:hover {
+    background-color: blue;
+}
+#submit:focus {
+    background-color: #ff66f2;
+}
+
+/* Barre de recherche masquée */
+#searchInput {
+    display: none;
+}
+#searchInput.show {
+    display: inline-block;
+}
+
+/* Icône de recherche */
+.search-icon {
+    cursor: pointer;
+}
+
+/* Texte stylisé */
+h3, h2{
+    font-family: "Dancing Script", cursive;
+    color: #eb0a60;
+    font-size: 2.1rem;
+}
+.block {
+    font-family: "Dancing Script", cursive;
+    font-size: 22px;
+    text-align: start;
+}
+p {
+    font-family: "Dancing Script", cursive;
+    font-size: 17px;
+}
+h1,.navbar-brand{
+    font-family: "Dancing Script", cursive;
+}
+.navbar-brand{
+    font-family: "Dancing Script", cursive;
+    font-size: 25px;
+}
+h6, .text {
+    font-family: "Dancing Script", cursive;
+    font-size: 25px;
+}
+
+/* Légumes / Produits */
+.legume {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    display: inline-block;
+    width: 200px;
+}
+.legume img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Conteneur contact */
+.contact-container {
+    background-color: white;
+    max-width: 800px;
+    margin: auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 5px 0px 10px #111;
+}
+.carousel,
+.carousel-inner,
+.carousel-item {
+    height: 75vh;
+}
+
+.carousel-item img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+
+.shake-cart {
+    animation: shake 0.4s;
+  }
+
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+  }
+
+  

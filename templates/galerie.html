@@ -1,0 +1,120 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h4 class="text-center mb-4">Our Gallery</h4>
+
+    <!-- Filtres -->
+    <div class="row d-flex justify-content-center flex-wrap gap-2 mb-4">
+        <button class="btn btn-outline-success filter-btn text-white col-md-2" data-filter="all">Tous</button>
+        <button class="btn btn-outline-success filter-btn text-white col-md-2" data-filter="fleurs">Fleurs</button>
+        <button class="btn btn-outline-success filter-btn text-white col-md-2" data-filter="plantes">Plantes</button>
+        <button class="btn btn-outline-success filter-btn text-white col-md-2" data-filter="exterieur">Extérieur</button>
+    </div>
+
+    <!-- Galerie -->
+    <div class="row">
+        {% set images = [
+            ('chantal-garnier-910GanwBoew-unsplash.jpg', 'fleurs'),
+            ('hoach-le-dinh-c8TWWQ5ZnUw-unsplash.jpg', 'plantes'),
+            ('inigo-de-la-maza-s285sDw5Ikc-unsplash.jpg', 'exterieur'),
+            ('image_4.jpg', 'fleurs'),
+            ('sinitta-leunen-DeMtgCQU1Lw-unsplash.jpg', 'exterieur'),
+            ('randy-fath-5aJVJvJ9rG8-unsplash.jpg', 'plantes'),
+            ('megan-thomas-xMh_ww8HN_Q-unsplash.jpg', 'fleurs'),
+            ('mtsjrdl-Bqd8t9_Rh2o-unsplash.jpg', 'plantes')
+        ] %}
+
+        {% for image, category in images %}
+        <div class="col-md-3 col-6 mb-4 gallery-item" data-category="{{ category }}">
+            <img class="w-100 h-75 gallery-img zoomable" src="{{ url_for('static', filename='uploads/' ~ image) }}" alt="image">
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Zoom Modal -->
+<div id="zoomModal" class="zoom-modal">
+    <span class="zoom-close">&times;</span>
+    <img class="zoom-modal-content" id="zoomedImg">
+</div>
+
+<!-- JS -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const buttons = document.querySelectorAll('.filter-btn');
+        const items = document.querySelectorAll('.gallery-item');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.getAttribute('data-filter');
+                items.forEach(item => {
+                    item.style.display = (filter === 'all' || item.getAttribute('data-category') === filter) ? 'block' : 'none';
+                });
+            });
+        });
+
+        // Zoom modal
+        document.querySelectorAll('.zoomable').forEach(img => {
+            img.addEventListener('click', function () {
+                const modal = document.getElementById('zoomModal');
+                const modalImg = document.getElementById('zoomedImg');
+                modal.style.display = "block";
+                modalImg.src = this.src;
+            });
+        });
+
+        document.querySelector('.zoom-close').addEventListener('click', function () {
+            document.getElementById('zoomModal').style.display = "none";
+        });
+
+        document.getElementById('zoomModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                this.style.display = "none";
+            }
+        });
+    });
+</script>
+
+<style>
+    .gallery-img {
+        transition: transform 0.3s ease;
+    }
+    .gallery-img:hover {
+        transform: scale(1.05);
+        cursor: pointer;
+    }
+
+    /* Zoom modal */
+    .zoom-modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        padding-top: 50px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.9);
+    }
+
+    .zoom-modal-content {
+        margin: auto;
+        display: block;
+        max-width: 90%;
+        max-height: 80vh;
+        border-radius: 8px;
+    }
+
+    .zoom-close {
+        position: absolute;
+        top: 20px;
+        right: 40px;
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">Toutes les publications</h2>
+  <div class="row text-center">
+    {% for pub in publications %}
+    <div class="col-md-4 col-sm-6 mb-4">
+      <div class="card h-100 text-center m-auto">
+        {% if pub.image %}
+        <img src="{{ pub.image }}" class="card-img-top mx-auto d-block mt-3"
+             alt="Image de {{ pub.nom }}"
+             style="width: 100px; height: 100px; object-fit: cover;">
+        {% else %}
+        <img src="{{ url_for('static', filename='default.jpg') }}" class="card-img-top" alt="Image par défaut">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ pub.nom }}</h5>
+          <p class="card-text">
+            Catégorie : {{ pub.categorie }}<br>
+            Prix : {{ pub.prix }} /{{ pub.unite }}
+          </p>
+          <button type="button" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#addToCartModal"
+                  data-produit-id="{{ pub.id }}"
+                  data-nom="{{ pub.nom }}"
+                  data-prix="{{ pub.prix }}"
+                  data-image="{{ pub.image }}">
+            Ajouter au panier
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form method="post" action="{{ url_for('ajouter_panier') }}">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addToCartModalLabel">Ajouter au panier</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="produit_id" id="modal-produit-id">
+          <div class="text-center mb-3">
+            <img id="modal-image" src="" alt="Image produit" class="img-fluid" style="max-height: 150px;">
+          </div>
+          <div class="mb-3">
+            <label>Nom du produit :</label>
+            <input type="text" class="form-control" name="nom" id="modal-nom" readonly>
+          </div>
+          <div class="mb-3">
+            <label>Prix unitaire :</label>
+            <input type="text" class="form-control" name="prix_unitaire" id="modal-prix" readonly>
+          </div>
+          <div class="mb-3">
+            <label>Quantité :</label>
+            <input type="number" class="form-control" name="quantite" required value="1" min="1">
+          </div>
+          <div class="mb-3">
+            <label>Votre email :</label>
+            <input type="email" class="form-control" name="email" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Ajouter au panier</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- JS pour remplir automatiquement la modale -->
+<script>
+  const addToCartModal = document.getElementById('addToCartModal');
+  addToCartModal.addEventListener('show.bs.modal', function (event) {
+    const button = event.relatedTarget;
+    const produitId = button.getAttribute('data-produit-id');
+    const nom = button.getAttribute('data-nom');
+    const prix = button.getAttribute('data-prix');
+    const image = button.getAttribute('data-image');
+
+    document.getElementById('modal-produit-id').value = produitId;
+    document.getElementById('modal-nom').value = nom;
+    document.getElementById('modal-prix').value = prix;
+    document.getElementById('modal-image').src = image || "{{ url_for('static', filename='default.jpg') }}";
+  });
+</script>
+{% endblock %}
