@@ -27,7 +27,10 @@
 
         {% for image, category in images %}
         <div class="col-md-3 col-6 mb-4 gallery-item" data-category="{{ category }}">
-            <img class="w-100 h-75 gallery-img zoomable" src="{{ url_for('static', filename='uploads/' ~ image) }}" alt="image">
+            <p class="text-dark text-center fw-bold">Produit agricoles.</p>
+            <div class="container">
+                <img class="w-100 h-100 gallery-img zoomable" src="{{ url_for('static', filename='uploads/' ~ image) }}" alt="image">
+            </div>
         </div>
         {% endfor %}
     </div>
@@ -40,81 +43,5 @@
 </div>
 
 <!-- JS -->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const buttons = document.querySelectorAll('.filter-btn');
-        const items = document.querySelectorAll('.gallery-item');
-
-        buttons.forEach(button => {
-            button.addEventListener('click', () => {
-                const filter = button.getAttribute('data-filter');
-                items.forEach(item => {
-                    item.style.display = (filter === 'all' || item.getAttribute('data-category') === filter) ? 'block' : 'none';
-                });
-            });
-        });
-
-        // Zoom modal
-        document.querySelectorAll('.zoomable').forEach(img => {
-            img.addEventListener('click', function () {
-                const modal = document.getElementById('zoomModal');
-                const modalImg = document.getElementById('zoomedImg');
-                modal.style.display = "block";
-                modalImg.src = this.src;
-            });
-        });
-
-        document.querySelector('.zoom-close').addEventListener('click', function () {
-            document.getElementById('zoomModal').style.display = "none";
-        });
-
-        document.getElementById('zoomModal').addEventListener('click', function (e) {
-            if (e.target === this) {
-                this.style.display = "none";
-            }
-        });
-    });
-</script>
-
-<style>
-    .gallery-img {
-        transition: transform 0.3s ease;
-    }
-    .gallery-img:hover {
-        transform: scale(1.05);
-        cursor: pointer;
-    }
-
-    /* Zoom modal */
-    .zoom-modal {
-        display: none;
-        position: fixed;
-        z-index: 9999;
-        padding-top: 50px;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0,0,0,0.9);
-    }
-
-    .zoom-modal-content {
-        margin: auto;
-        display: block;
-        max-width: 90%;
-        max-height: 80vh;
-        border-radius: 8px;
-    }
-
-    .zoom-close {
-        position: absolute;
-        top: 20px;
-        right: 40px;
-        color: white;
-        font-size: 40px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-</style>
+<script src="{{ url_for('static', filename='js/zoom.js') }}"/></script>
 {% endblock %}

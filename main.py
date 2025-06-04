@@ -32,12 +32,13 @@ class Publication(db.Model):
     image = db.Column(db.Text)
 
 class User(db.Model):
-    __tablename__ = 'user'
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(100))
     last_name = db.Column(db.String(100))
     email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.Text, nullable=False)
+
 
 # --- CREATION DES TABLES ---
 with app.app_context():
@@ -296,11 +297,46 @@ def clear_panier_flag():
     session.pop('panier_ajoute', None)
     return '', 204
 
+@app.route('/delete_user', methods=['POST'])
+def delete_user():
+    user_id = request.form.get('id')
+    if not user_id:
+        flash("ID utilisateur manquant.", "danger")
+        return redirect(url_for('user_list'))
+
+    try:
+        conn = get_db_connection()  # ouvrir connexion (à adapter)
+        cur = conn.cursor()
+        # Suppression dans la table users (adapter le nom de table/colonne si besoin)
+        cur.execute("DELETE FROM users WHERE id = %s", (user_id,))
+        conn.commit()
+        cur.close()
+        conn.close()
+        flash("Utilisateur supprimé avec succès.", "success")
+    except Exception as e:
+        flash(f"Erreur lors de la suppression : {e}", "danger")
+
+    return redirect(url_for('user_list')
+)
+
+# Exemple de route pour afficher la liste des utilisateurs
+import psycopg2.extras
 
 @app.route('/users')
-def users():
-    all_users = User.query.all()  # Récupère tous les utilisateurs
-    return render_template('users.html', users=all_users)
+def user_list():
+    conn = get_db_connection()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur.execute('SELECT id, first_name, last_name, email FROM "users" ORDER BY id')
+    users = cur.fetchall()
+    cur.close()
+    conn.close()
+
+    return render_template('users.html', users=users)
+
+
+    # Rendre le template, en passant la liste des utilisateurs
+    return render_template('users.html', users=users)
+
 # --- LANCEMENT DE L'APPLICATION ---
 if __name__ == '__main__':
     app.config.update(SESSION_COOKIE_SAMESITE="Lax")

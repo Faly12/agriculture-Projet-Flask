@@ -62,26 +62,58 @@
     </div>
 </div>
 
+<!-- Galerie avec images zoomables -->
 <div class="row mt-5">
     <h4 class="text-center mt-3">Our Gallery</h4>
-    <div class="col-md-4 col-xs-12">
-        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/image_1.jpg') }}">
+
+    <div class="col-md-4 col-xs-12 mb-3">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/image_1.jpg') }}" 
+             alt="Image 1" style="cursor:pointer;" onclick="openZoomGallery(this.src)">
     </div>
-    <div class="col-md-4 col-xs-12">
-        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/andres-carreno-RqS7r2CzL68-unsplash.jpg') }}">
+    <div class="col-md-4 col-xs-12 mb-3">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/andres-carreno-RqS7r2CzL68-unsplash.jpg') }}" 
+             alt="Image 2" style="cursor:pointer;" onclick="openZoomGallery(this.src)">
     </div>
-    <div class="col-md-4 col-xs-12">
-        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/megan-thomas-xMh_ww8HN_Q-unsplash.jpg') }}">
+    <div class="col-md-4 col-xs-12 mb-3">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/megan-thomas-xMh_ww8HN_Q-unsplash.jpg') }}" 
+             alt="Image 3" style="cursor:pointer;" onclick="openZoomGallery(this.src)">
     </div>
-    <div class="col-md-4 col-xs-12">
-        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/image_4.jpg') }}">
+    <div class="col-md-4 col-xs-12 mb-3">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/image_4.jpg') }}" 
+             alt="Image 4" style="cursor:pointer;" onclick="openZoomGallery(this.src)">
     </div>
-    <div class="col-md-4 col-xs-12">
-        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/image_7.jpg') }}">
+    <div class="col-md-4 col-xs-12 mb-3">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/image_7.jpg') }}" 
+             alt="Image 5" style="cursor:pointer;" onclick="openZoomGallery(this.src)">
     </div>
-    <div class="col-md-4 col-xs-12">
-        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/image_6.jpg') }}">
+    <div class="col-md-4 col-xs-12 mb-3">
+        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/image_6.jpg') }}" 
+             alt="Image 6" style="cursor:pointer;" onclick="openZoomGallery(this.src)">
     </div>
 </div>
-{% endblock %}
 
+<!-- Modal Zoom Galerie -->
+<div class="modal fade " id="zoomGalleryModal" tabindex="-1" aria-labelledby="zoomGalleryLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg bg-light">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-body p-0 position-relative">
+        <button type="button" class="btn-close btn-close-danger position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        <p class="text-dark text-center fw-bold">Produit agricoles.</p>
+        <div class="container">
+          <img id="zoomGalleryImg" src="" class="img-fluid rounded mx-auto d-block" alt="Image zoomée" style="max-height: 80vh; max-width: 100%;">
+       </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openZoomGallery(src) {
+    const modalImg = document.getElementById('zoomGalleryImg');
+    modalImg.src = src;
+    const zoomModal = new bootstrap.Modal(document.getElementById('zoomGalleryModal'));
+    zoomModal.show();
+  }
+</script>
+
+{% endblock %}

@@ -6,7 +6,7 @@
         <h2 class="text-center">Our Best Product</h2>
         {% for graine in graines %}
         <div class="col-md-3 mb-4 h-75">
-            <div class="card shadow-sm text-center h-100 d-flex flex-column justify-content-between border ">
+            <div class="card shadow-sm text-center h-100 d-flex flex-column justify-content-between border">
                 {% if graine[4] %}
                     <img src="{{ url_for('static', filename='uploads/' ~ graine[4]) }}" 
                          class="card-img-top img-fluid p-3" 
@@ -26,7 +26,6 @@
                 </div>
             </div>
         </div>
-                
 
         <!-- Modal pour confirmer l'ajout au panier -->
         <div class="modal fade" id="addToCartModal{{ graine[0] }}" tabindex="-1" aria-labelledby="addToCartModalLabel{{ graine[0] }}" aria-hidden="true">
@@ -53,11 +52,12 @@
                             </div>
                             <div class="mb-3">
                                 <label for="email{{ graine[0] }}" class="form-label">Email :</label>
-                                <input type="email" class="form-control" id="email{{ graine[0] }}" name="email"  required>
+                                <input type="email" class="form-control" id="email{{ graine[0] }}" name="email" required>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Oui, ajouter</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                         </div>
                     </form>
                 </div>
@@ -66,25 +66,49 @@
         {% endfor %}
     </div>
 </div>
+
+<!-- Galerie zoomable -->
 <div class="row mt-5">
     <h4 class="text-center mt-3">Our Gallery</h4>
-    <div class="col-md-4 col-xs-12">
-        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/hoach-le-dinh-c8TWWQ5ZnUw-unsplash.jpg') }}">
+    {% set gallery_images = [
+        'hoach-le-dinh-c8TWWQ5ZnUw-unsplash.jpg',
+        'gros-plan-d-arachides-non-pelees-isolees-sur-une-surface-blanche.jpg',
+        'graine.JPG',
+        'noix-de-hetre-vue-de-dessus.jpg',
+        'shelley-pauls-t4X660oKiYs-unsplash.jpg',
+        'vue-de-dessus-noix-crues-de-couleur-claire-et-savoureuse-sur-brown-snack-amande-noix-noix.jpg'
+    ] %}
+    {% for img in gallery_images %}
+    <div class="col-md-4 col-xs-12 mb-3">
+        <img src="{{ url_for('static', filename='uploads/' ~ img) }}" 
+             alt="Gallery Image" class="w-100 h-75" 
+             style="cursor:pointer;" onclick="openZoomGallery(this.src)">
     </div>
-    <div class="col-md-4 col-xs-12">
-        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/gros-plan-d-arachides-non-pelees-isolees-sur-une-surface-blanche.jpg') }}">
-    </div>
-    <div class="col-md-4 col-xs-12">
-        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/graine.JPG') }}">
-    </div>
-    <div class="col-md-4 col-xs-12">
-        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/noix-de-hetre-vue-de-dessus.jpg') }}">
-    </div>
-    <div class="col-md-4 col-xs-12">
-        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/shelley-pauls-t4X660oKiYs-unsplash.jpg') }}">
-    </div>
-    <div class="col-md-4 col-xs-12">
-        <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/vue-de-dessus-noix-crues-de-couleur-claire-et-savoureuse-sur-brown-snack-amande-noix-noix.jpg') }}">
-    </div>
+    {% endfor %}
 </div>
+
+<!-- Modal Zoom Galerie -->
+<div class="modal fade" id="zoomGalleryModal" tabindex="-1" aria-labelledby="zoomGalleryLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg bg-light">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-body p-0 position-relative">
+        <button type="button" class="btn-close btn-close-danger position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        <p class="text-dark text-center fw-bold">Produit agricoles.</p>
+       <div class="container">
+        <img id="zoomGalleryImg" src="" class="img-fluid rounded mx-auto d-block" alt="Image zoomée" style="max-height: 80vh; max-width: 100%;">
+       </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openZoomGallery(src) {
+    const modalImg = document.getElementById('zoomGalleryImg');
+    modalImg.src = src;
+    const zoomModal = new bootstrap.Modal(document.getElementById('zoomGalleryModal'));
+    zoomModal.show();
+  }
+</script>
+
 {% endblock %}
