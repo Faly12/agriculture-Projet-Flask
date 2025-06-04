@@ -9,8 +9,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
 </head>
 <body>
-  <div id="searchResults">
-    
+  <div d="results" class="mt-3">   
     <!-- Header -->
     <header class="py-2 ">
       <div class="container-fluid d-flex align-items-center justify-content-between">
@@ -24,7 +23,7 @@
             <span class="input-group-text bg-secondary text-white">
               <i class="bi bi-search fs-5" role="button" onclick="toggleSearchField()" title="Rechercher"></i>
             </span>
-          </div>
+          </div>          
           <a href="#" data-bs-toggle="modal" data-bs-target="#authModal">
             <img src="{{ url_for('static', filename='uploads/admin.png') }}" alt="Admin" style="height: 40px;">
           </a>

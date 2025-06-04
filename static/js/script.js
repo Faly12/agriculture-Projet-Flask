@@ -70,4 +70,54 @@ function toggleSearchField() {
   input.focus();
 }
 
-//agrandir un block 
+//searche product
+
+function toggleSearchField() {
+  const input = document.getElementById("searchInput");
+  const query = input.value;
+
+  if (query.trim() === "") return;
+
+  fetch(`/searchContainer?query=${encodeURIComponent(query)}`)
+      .then(response => response.json())
+      .then(data => {
+          const resultsContainer = document.getElementById("results");
+          resultsContainer.innerHTML = ""; // Clear previous results
+
+          if (data.length === 0) {
+              resultsContainer.innerHTML = "<p>Aucun résultat trouvé.</p>";
+              return;
+          }
+
+          // Create table
+          let table = `
+              <table class="table table-bordered mt-3">
+                  <thead class="table-success">
+                      <tr>
+                          <th>ID</th>
+                          <th>Nom</th>
+                          <th>Prix</th>
+                          <th>Catégorie</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+          `;
+
+          data.forEach(item => {
+              table += `
+                  <tr>
+                      <td>${item[0]}</td>
+                      <td>${item[1]}</td>
+                      <td>${item[2]} €</td>
+                      <td>${item[3]}</td>
+                  </tr>
+              `;
+          });
+
+          table += "</tbody></table>";
+          resultsContainer.innerHTML = table;
+      })
+      .catch(error => {
+          console.error("Erreur lors de la recherche :", error);
+      });
+}

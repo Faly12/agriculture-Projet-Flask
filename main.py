@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, request, redirect, url_for, flash
+from flask import Flask, render_template, session, request, redirect, url_for, flash,jsonify
 from collections import namedtuple
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
@@ -185,7 +185,7 @@ def showPublications():
     return render_template('publication.html', publications=publications)
 
 @app.route('/searchContainer/<string:query>')
-def searchContainer(query):
+def search_products(query):
     conn = get_db_connection()
     try:
         cur = conn.cursor()
@@ -197,11 +197,17 @@ def searchContainer(query):
             SELECT id, nom, prix, 'graines' AS categorie FROM graines WHERE LOWER(nom) LIKE LOWER(%s)
             ORDER BY id
         """, (f'%{query}%', f'%{query}%', f'%{query}%'))
-        users = cur.fetchall()
+        results = cur.fetchall()
     finally:
         cur.close()
         conn.close()
-    return render_template("index.html", users=users)
+    return results
+
+@app.route('/searchContainer', methods=['GET'])
+def searchContainer():
+    query = request.args.get('query', '')
+    results = search_products(query)
+    return jsonify(results)
 
 @app.route('/galerie')
 def galerie():
