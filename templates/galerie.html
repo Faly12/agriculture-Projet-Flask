@@ -22,13 +22,18 @@
             ('sinitta-leunen-DeMtgCQU1Lw-unsplash.jpg', 'exterieur'),
             ('randy-fath-5aJVJvJ9rG8-unsplash.jpg', 'plantes'),
             ('megan-thomas-xMh_ww8HN_Q-unsplash.jpg', 'fleurs'),
-            ('mtsjrdl-Bqd8t9_Rh2o-unsplash.jpg', 'plantes')
+            ('mtsjrdl-Bqd8t9_Rh2o-unsplash.jpg', 'plantes'),
+
+            ('image_6.jpg', 'exterieur'),
+            ('image_7.jpg', 'plantes'),
+            ('r-du-plessis-cXvqCw0m5WE-unsplash.jpg', 'fleurs'),
+            ('tuyen-vo-jMxXSbymczg-unsplash.jpg', 'plantes')
         ] %}
 
         {% for image, category in images %}
-        <div class="col-md-3 col-6 mb-4 gallery-item" data-category="{{ category }}">
+        <div class="col-md-3 col-6 mb-4 gallery-item border rounded-2" data-category="{{ category }}">
             <p class="text-dark text-center fw-bold">Produit agricoles.</p>
-            <div class="container">
+            <div class="container-fluid w-100">
                 <img class="w-100 h-100 gallery-img zoomable" src="{{ url_for('static', filename='uploads/' ~ image) }}" alt="image">
             </div>
         </div>
