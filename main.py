@@ -335,8 +335,32 @@ def user_list():
     return render_template('users.html', users=users)
 
 
-    # Rendre le template, en passant la liste des utilisateurs
-    return render_template('users.html', users=users)
+@app.route('/roles')
+def roles():
+    conn = get_db_connection()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur.execute('SELECT id, first_name, last_name, email, roles FROM users ORDER BY id')
+    users = cur.fetchall()
+    cur.close()
+    conn.close()
+    return render_template('roles.html', users=users)
+
+
+@app.route('/update_role/<int:user_id>', methods=['POST'])
+def update_role(user_id):
+    new_role = request.form['new_role']
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute("UPDATE users SET roles = %s WHERE id = %s", (new_role, user_id))
+        conn.commit()
+        cur.close()
+        conn.close()
+        flash("Rôle mis à jour avec succès ✅", "success")
+    except Exception as e:
+        flash(f"Erreur lors de la mise à jour du rôle ❌: {e}", "danger")
+    
+    return redirect(url_for('roles'))
 
 # --- LANCEMENT DE L'APPLICATION ---
 if __name__ == '__main__':

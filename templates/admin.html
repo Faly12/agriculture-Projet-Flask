@@ -17,14 +17,37 @@
   <ul class="nav flex-column">
     <li class="nav-item"><a class="nav-link" href="/admin"><i class="bi bi-house-door me-2"></i>Dashboard</a></li>
     <li class="nav-item"><a class="nav-link" href="/produits"><i class="bi bi-cart-check me-2"></i>Commandes</a></li>
-    <li class="nav-item"><a class="nav-link" href="/users"><i class="bi bi-person-circle me-2"></i>Utilisateur</a></li>
-    <li class="nav-item"><a class="nav-link" href="/calendar"><i class="bi bi-calendar me-2"></i>Calendar</a></li>
+    <li class="nav-item"><a class="nav-link" href="/roles"><i class="bi bi-people me-2"></i>Gestion rôles</a></li>
+    <!-- Paramètres -->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="settingsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-gear me-2"></i>Paramètres
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="settingsDropdown">
+        <li><a class="dropdown-item nav-link text-dark" href="/profil"><i class="bi bi-person-circle"></i>Profil</a></li>
+        <li><a class="dropdown-item nav-link text-dark" href="/securite"><i class="bi bi-shield-lock"></i>Sécurité</a></li>
+        <li class="nav-item"><a class="nav-link text-dark" href="#" onclick="toggleDarkMode()"id="paramLink">
+          <i class="bi bi-moon me-2 text-dark"></i>Mode sombre</a>
+        </li>
+      </ul>
+    </li>
     <li class="nav-item">
       <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#publicationModal">
         <i class="bi bi-receipt me-2"></i>Publication
       </a>
     </li>    
-    <li class="nav-item"><a class="nav-link" href="#" onclick="toggleDarkMode()"><i class="bi bi-gear me-2"></i>Paramètres</a></li>
+    <!-- Rapports et Statistiques -->
+    <li class="nav-item dropdown ">
+      <a class="nav-link dropdown-toggle" href="#" id="rapportsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-graph-up me-2"></i>Rapports
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="rapportsDropdown">
+        <li class="nav-item"><a class="nav-link text-dark" href="/users">
+          <i class="bi bi-person ms-3 text-dark"></i>Users</a></li>
+        <li><a class="dropdown-item text-dark" href="/stock">
+          <i class="bi bi-clipboard-data  me-2 text-dark"></i>Stock</a></li>
+      </ul>
+    </li>
     <li class="nav-item"><a class="nav-link" href="/"><i class="bi bi-box-arrow-right me-2"></i>Déconnexion</a></li>
   </ul>
 </nav>
@@ -32,14 +55,14 @@
 <main>
 
   <!-- Hero section -->
-  <section class="hero bg-light">
+  <section class="hero">
     <div>
       <h1>Bienvenue à Agriculture Shop</h1>
       <p>Produits agricoles frais, bio et de qualité.</p>
     </div>
   </section>
   <!-- Services -->
-  <section id="services" class="py-5 bg-light">
+  <section id="services" class="py-5">
     <div class="container">
       <h2 class="text-center">Nos Services</h2>
       <div class="row text-center">
