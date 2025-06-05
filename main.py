@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from psycopg2.extras import RealDictCursor
+import psycopg2.extras
 import psycopg2
 import os
 
@@ -311,9 +312,8 @@ def delete_user():
         return redirect(url_for('user_list'))
 
     try:
-        conn = get_db_connection()  # ouvrir connexion (à adapter)
+        conn = get_db_connection()  
         cur = conn.cursor()
-        # Suppression dans la table users (adapter le nom de table/colonne si besoin)
         cur.execute("DELETE FROM users WHERE id = %s", (user_id,))
         conn.commit()
         cur.close()
@@ -321,13 +321,9 @@ def delete_user():
         flash("Utilisateur supprimé avec succès.", "success")
     except Exception as e:
         flash(f"Erreur lors de la suppression : {e}", "danger")
-
     return redirect(url_for('user_list')
 )
-
-# Exemple de route pour afficher la liste des utilisateurs
-import psycopg2.extras
-
+    
 @app.route('/users')
 def user_list():
     conn = get_db_connection()
