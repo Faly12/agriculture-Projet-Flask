@@ -5,15 +5,12 @@ from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from psycopg2.extras import RealDictCursor
 import psycopg2.extras
-import random
 import psycopg2
 import os
 
 # --- CONFIGURATION DE L'APPLICATION ---
 app = Flask(__name__)
 app.secret_key = "une_cle_secrete_longue_et_complexe"
-app.secret_key = 'une_clef_secrete_pour_la_session'  # à changer en prod
-
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Faly@localhost/agriculture'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -234,9 +231,6 @@ def contact():
 
 @app.route('/admin')
 def admin():
-    if not session.get('username') or not session.get('2fa_valid'):
-        return redirect(url_for('login'))
-
     conn = get_db_connection()
     try:
         cur = conn.cursor()
@@ -246,26 +240,7 @@ def admin():
     finally:
         cur.close()
         conn.close()
-
     return render_template('admin.html', total=total)
-
-@app.route('/two_factor', methods=['GET', 'POST'])
-def two_factor():
-    if 'user_id' not in session:
-        return redirect(url_for('index'))
-    
-    if request.method == 'POST':
-        code = request.form.get('code')
-        print(f"Code entré : {code} | Code session : {session.get('code_2fa')}")
-        if code == session.get('code_2fa'):
-            session['2fa_valid'] = True
-            flash('Authentification réussie !', 'success')
-            return redirect(url_for('admin'))
-        else:
-            flash('Code 2FA incorrect, veuillez réessayer.', 'danger')
-    
-    return render_template('two_factor.html')
-
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -288,31 +263,18 @@ def register():
     flash("Inscription réussie. Vous êtes maintenant connecté.", "success")
     return redirect(url_for('index'))
 
-from random import randint
-
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
     email = request.form.get('email')
     password = request.form.get('password')
     user = User.query.filter_by(email=email).first()
     if user and check_password_hash(user.password, password):
-        # Stocker l'id et nom en session (temporairement)
         session['user_id'] = user.id
         session['user_name'] = f"{user.first_name} {user.last_name}"
-        
-        # Générer un code 2FA aléatoire (6 chiffres)
-        code_2fa = str(randint(100000, 999999))
-        session['code_2fa'] = code_2fa
-        
-        # Ici tu peux envoyer ce code par email/SMS à l'utilisateur
-        print(f"Code 2FA pour {email} : {code_2fa}")  # Pour démo on affiche en console
-        
-        # Rediriger vers la page de saisie du code 2FA
-        return redirect(url_for('two_factor'))
-    
+        flash('Connexion réussie !', 'success')
+        return redirect(url_for('admin'))
     flash('Email ou mot de passe incorrect.', 'danger')
-    return render_template('admin.html')
-
+    return redirect(url_for('index'))
 
 @app.route('/logout')
 def logout():
