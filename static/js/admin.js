@@ -15,19 +15,19 @@ function updateCartCount() {
 
   const darkModeStyles = `
   body.dark-mode {
-    background-color: #121212;
+    background-color:rgba(117, 113, 113, 0.82);
     color: #fff;
   }
   .navbar.dark-mode,
   .footer.dark-mode {
-    background-color: #1f1f1f;
+    background-color:rgba(117, 113, 113, 0.82);
   }
   .card.dark-mode {
-    background-color: #2a2a2a;
+    background-color:rgba(117, 113, 113, 0.82);
     color: white;
   }
   .dark-mode .nav-link {
-    color: rgba(2, 2, 2, 0.82) !important;
+    color: rgba(117, 113, 113, 0.82) !important;
   }
 `;
 
@@ -60,7 +60,7 @@ window.onload = function () {
       .forEach(el => el.classList.add('dark-mode'));
     const paramLink = document.getElementById("paramLink");
     if (paramLink) {
-      paramLink.innerHTML = '<i class="bi bi-gear me-2"></i>Mode clair';
+      paramLink.innerHTML = '<i class="bi bi-moon me-2"></i>Mode clair';
     }
   }
 };
@@ -99,3 +99,6 @@ $(document).ready(function () {
       row.style.display = text.includes(filter) ? '' : 'none';
     });
   });
+
+
+  

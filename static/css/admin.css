@@ -5,6 +5,23 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: #f8f9fa;
+}
+
+#sidebar a {
+      display: block; padding: 10px 20px; color: #333; text-decoration: none;
+}
+#sidebar a:hover 
+{ 
+  background: #d1e7dd;
+}
+.main {
+   margin-left: 220px; padding: 30px;
+ }
+.card-box { box-shadow: 0 0 10px rgba(0,0,0,0.05); border-radius: 12px; 
+}
+footer{
+  background-color:  #e9f7ef !important;
 }
 .hero {
   height: 50vh;
@@ -14,6 +31,9 @@ body {
   color: white;
   text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
   text-align: center;
+}
+li a{
+  color: black !important;
 }
 .hero h1 {
   color: #198754;
@@ -30,20 +50,23 @@ body {
   left: 0;
   height: 100vh;
   width: 220px;
-  background-color: #198754; 
+  width: 220px; 
+  min-height: 100vh;
+  background: #e9f7ef;
+  padding-top: 20px;
   padding: 1.5rem;
-  color: white;
+  color: rgb(7, 7, 7);
   overflow-y: auto;
   display: none; 
   flex-direction: column;
   z-index: 1030;
 }
 #sidebar h4 {
-  color: white;
+  color: rgb(0, 0, 0);
   margin-bottom: 1rem;
 }
 #sidebar .nav-link {
-  color: white;
+  color: rgb(8, 8, 8);
   padding-left: 0;
 }
 #sidebar .nav-link:hover {
@@ -68,3 +91,14 @@ body {
 .save{
   margin-left: 20%;
 }
+
+.sidebar {
+  width: 220px; min-height: 100vh; background: #e9f7ef;
+  position: fixed; left: 0; top: 0; padding-top: 20px;
+}
+.sidebar a {
+  display: block; padding: 10px 20px; color: #333; text-decoration: none;
+}
+.sidebar a:hover { background: #d1e7dd; }
+.main { margin-left: 220px; padding: 30px; }
+.card-box { box-shadow: 0 0 10px rgba(0,0,0,0.05); border-radius: 12px; }

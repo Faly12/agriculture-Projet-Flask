@@ -16,20 +16,23 @@
 <div class="wrapper d-flex">
   <!-- Sidebar -->
   <nav id="sidebar" aria-label="Menu Administration">
-    <h4>Admin Menu</h4>
+    <div class="text-center mb-4">
+      <img src="{{ url_for('static', filename='uploads/logo.png') }}" class="rounded-circle" width="80">
+      <h4 class="mt-2">Admin Menu</h4>
+    </div>
     <ul class="nav flex-column">
       <ul class="nav flex-column">
-        <li class="nav-item"><a class="nav-link" href="/admin"><i class="bi bi-house-door me-2"></i>Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin"><i class="bi bi-house-door me-2"></i>Acceuil</a></li>
         <li class="nav-item"><a class="nav-link" href="/produits"><i class="bi bi-cart-check me-2"></i>Commandes</a></li>
         <li class="nav-item"><a class="nav-link" href="/roles"><i class="bi bi-people me-2"></i>Gestion rôles</a></li>
+        <li class="nav-item"><a class="nav-link" href="/dashboard"><i class="bi bi-boxes me-2"></i>Dashboard</a></li>
         <!-- Paramètres -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="settingsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-gear me-2"></i>Paramètres
           </a>
           <ul class="dropdown-menu" aria-labelledby="settingsDropdown">
-            <li><a class="dropdown-item nav-link text-dark" href="/profil"><i class="bi bi-person-circle"></i>Profil</a></li>
-            <li><a class="dropdown-item nav-link text-dark" href="/securite"><i class="bi bi-shield-lock"></i>Sécurité</a></li>
+            <li><a class="dropdown-item nav-link text-dark" href="/profile"><i class="bi bi-person-circle"></i>Profil</a></li>
             <li class="nav-item"><a class="nav-link text-dark" href="#" onclick="toggleDarkMode()"id="paramLink">
               <i class="bi bi-moon me-2 text-dark"></i>Mode sombre</a>
             </li>
@@ -127,7 +130,7 @@
 </div>
 
 <!-- Footer -->
-<footer class="text-center py-3 bg-success text-white mt-auto">
+<footer class="footer text-center py-3 text-dark mt-auto">
   &copy; {{ current_year }} Agriculture Shop - Tous droits réservés.
 </footer>
 

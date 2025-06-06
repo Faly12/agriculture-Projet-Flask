@@ -4,9 +4,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from psycopg2.extras import RealDictCursor
+from datetime import datetime
 import psycopg2.extras
+import json
 import psycopg2
 import os
+
 
 # --- CONFIGURATION DE L'APPLICATION ---
 app = Flask(__name__)
@@ -14,6 +17,7 @@ app.secret_key = "une_cle_secrete_longue_et_complexe"
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Faly@localhost/agriculture'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 
 # --- INITIALISATION SQLALCHEMY ---
 db = SQLAlchemy(app)
@@ -185,31 +189,6 @@ def showPublications():
     publications = Publication.query.order_by(Publication.id.desc()).all()
     return render_template('publication.html', publications=publications)
 
-@app.route('/searchContainer/<string:query>')
-def search_products(query):
-    conn = get_db_connection()
-    try:
-        cur = conn.cursor()
-        cur.execute("""
-            SELECT id, nom, prix, 'legume' AS categorie FROM legume WHERE LOWER(nom) LIKE LOWER(%s)
-            UNION ALL
-            SELECT id, nom, prix, 'fruits' AS categorie FROM fruits WHERE LOWER(nom) LIKE LOWER(%s)
-            UNION ALL
-            SELECT id, nom, prix, 'graines' AS categorie FROM graines WHERE LOWER(nom) LIKE LOWER(%s)
-            ORDER BY id
-        """, (f'%{query}%', f'%{query}%', f'%{query}%'))
-        results = cur.fetchall()
-    finally:
-        cur.close()
-        conn.close()
-    return results
-
-@app.route('/searchContainer', methods=['GET'])
-def searchContainer():
-    query = request.args.get('query', '')
-    results = search_products(query)
-    return jsonify(results)
-
 @app.route('/galerie')
 def galerie():
     return render_template('galerie.html')
@@ -263,7 +242,7 @@ def register():
     flash("Inscription réussie. Vous êtes maintenant connecté.", "success")
     return redirect(url_for('index'))
 
-@app.route('/login', methods=['POST'])
+@app.route('/login',  methods=['GET', 'POST'])
 def login():
     email = request.form.get('email')
     password = request.form.get('password')
@@ -350,7 +329,7 @@ def roles():
 def update_role(user_id):
     new_role = request.form['new_role']
     try:
-        conn = get_connection()
+        conn = get_db_connection()
         cur = conn.cursor()
         cur.execute("UPDATE users SET roles = %s WHERE id = %s", (new_role, user_id))
         conn.commit()
@@ -362,6 +341,72 @@ def update_role(user_id):
     
     return redirect(url_for('roles'))
 
+@app.route('/cart_count')
+def cart_count():
+    if 'id' in session:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT COUNT(*) FROM panier WHERE user_id = %s", (session['id'],))
+        count = cur.fetchone()[0]
+        cur.close()
+        conn.close()
+        return jsonify({'count': count})
+    else:
+        return jsonify({'count': 0})
+
+# Exemple après vérification des identifiants :
+
+@app.route("/dashboard")
+def dashboard():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT roles FROM users")
+    roles = cur.fetchall()
+    conn.close()
+
+    role_counts = {}
+    for (role,) in roles:
+        role_counts[role] = role_counts.get(role, 0) + 1
+
+    total_users = sum(role_counts.values())
+
+    labels = list(role_counts.keys())
+    data = list(role_counts.values())
+
+    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    user_data = [150, 300, 200, 250, 400, 350, 380, 300, 320, 220, 350, 330]
+
+    # Ajoute ceci :
+    username = session.get("username", "Invité")
+    role = session.get("role", "")
+
+    return render_template(
+        "dashboard.html",
+        total_users=total_users,
+        role_counts=role_counts,
+        months=months,
+        user_data=user_data,
+        labels=json.dumps(labels),
+        values=json.dumps(data),
+        current_year=datetime.now().year,
+        username=username,
+        role=role
+    )
+
+@app.route('/profile')
+def profile():
+    if 'username' in session:
+        user_info = {
+            'username': session['username'],
+            'email': 'faliarisoazaindrasojacharotr@gmail.com',
+            'city': 'Paris',
+            'avatar': 'https://via.placeholder.com/150'
+        }
+        return render_template('profile.html', user=user_info)
+    else:
+        flash("Veuillez vous connecter pour accéder au profil.", "warning")
+        return redirect(url_for('login'))  # ✅ retour dans tous les cas
+    
 # --- LANCEMENT DE L'APPLICATION ---
 if __name__ == '__main__':
     app.config.update(SESSION_COOKIE_SAMESITE="Lax")
