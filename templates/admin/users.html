@@ -1,0 +1,70 @@
+{% extends "admin/adminLayoute.html" %}
+
+{% block content %}
+  <!-- Main content -->
+  <div class="container mt-5 save">
+    <h1>Liste des utilisateurs enregistrés</h1>
+    <table id="userTable" class="table table-striped">
+      <thead>
+        <tr>
+          <th class="bg-success text-white">ID</th>
+          <th class="bg-success text-white">Prénom</th>
+          <th class="bg-success text-white">Nom</th>
+          <th class="bg-success text-white">Email</th>
+          <th class="bg-success text-white">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.id }}</td>
+          <td>{{ user.first_name }}</td>
+          <td>{{ user.last_name }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <!-- Bouton pour ouvrir la modale -->
+            <button 
+              type="button" 
+              class="btn btn-link p-0 m-0" 
+              title="Supprimer" 
+              data-bs-toggle="modal" 
+              data-bs-target="#deleteModal"
+              data-user-id="{{ user.id }}"
+              data-user-name="{{ user.first_name }} {{ user.last_name }}"
+            >
+              <i class="bi bi-trash fs-4 text-danger"></i>
+            </button>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="5" class="text-center">Aucun utilisateur enregistré.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal de confirmation de suppression -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form id="deleteForm" method="POST" action="/delete_user">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <p>Voulez-vous vraiment supprimer l'utilisateur <strong id="userNameToDelete"></strong> ?</p>
+          <input type="hidden" name="id" id="userIdToDelete" value="">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-danger">Supprimer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

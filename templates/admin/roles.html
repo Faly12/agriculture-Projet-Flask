@@ -1,0 +1,70 @@
+{% extends "admin/adminLayoute.html" %}
+
+{% block content %}
+  <!-- Main Content -->
+  <div id="content" class="container mt-5">
+    <h2 class="mb-4 text-center">
+      <i class="bi bi-people-fill me-2"></i>Gestion des Utilisateurs et Rôles
+    </h2>
+
+    <div class="row mb-3">
+      <div class="col-md-4 ms-auto">
+        <input type="text" id="searchInput" class="form-control" placeholder="🔍 Rechercher un utilisateur..." />
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle text-center">
+        <thead class="table-info">
+          <tr>
+            <th>ID</th>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Rôles</th>
+          </tr>
+        </thead>
+        <tbody id="userTableBody">
+          {% for user in users %}
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+                <form action="/update_role/{{ user.id }}" method="post" class="d-flex justify-content-center align-items-center gap-2">
+                  <select name="new_role" class="form-select form-select-sm w-auto">
+                    <option value="user" {% if user.roles == 'user' %}selected{% endif %}>Utilisateur</option>
+                    <option value="admin" {% if user.roles == 'admin' %}selected{% endif %}>Admin</option>
+                  </select>
+                  <button type="submit" class="btn btn-sm btn-primary">
+                    <i class="bi bi-save"></i>
+                  </button>
+                </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="5">Aucun utilisateur trouvé.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <a href="/" class="btn btn-secondary mt-3">
+      <i class="bi bi-arrow-left"></i> Retour à l'accueil
+    </a>
+  </div>
+</div>
+<script>
+  document.getElementById('searchInput').addEventListener('keyup', function () {
+    const filter = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#userTableBody tr');
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(filter) ? '' : 'none';
+    });
+  });
+</script>
+{% endblock %}

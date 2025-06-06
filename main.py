@@ -65,7 +65,7 @@ def get_db_connection():
 @app.route('/')
 def accueil():
     produits = get_all_products()
-    return render_template('accueil.html', produits=produits)
+    return render_template('view/accueil.html', produits=produits)
 
 def get_all_products():
     try:
@@ -90,7 +90,7 @@ def index():
     finally:
         cur.close()
         conn.close()
-    return render_template('index.html', legumes=legumes)
+    return render_template('view/index.html', legumes=legumes)
 
 @app.route('/fruits')
 def fruits():
@@ -102,7 +102,7 @@ def fruits():
     finally:
         cur.close()
         conn.close()
-    return render_template('fruits.html', fruits=fruits)
+    return render_template('view/fruits.html', fruits=fruits)
 
 @app.route('/graines')
 def graines():
@@ -116,7 +116,7 @@ def graines():
         conn.close()
     Graine = namedtuple('Graine', ['id', 'nom', 'prix', 'unite', 'image'])
     graines = [Graine(*row) for row in graines_data]
-    return render_template('graine.html', graines=graines)
+    return render_template('view/graine.html', graines=graines)
 
 @app.route('/ajouter_panier', methods=['POST'])
 def ajouter_panier():
@@ -145,7 +145,7 @@ def ajouter_panier():
     session['cart_count'] = session.get('cart_count', 0) + 1
     flash("Produit ajouté avec succès")
     session['panier_ajoute'] = True
-    return redirect(url_for('accueil'))
+    return redirect(url_for('view/accueil'))
 
 @app.route('/produits')
 def produits():
@@ -157,7 +157,7 @@ def produits():
     finally:
         cur.close()
         conn.close()
-    return render_template('produits.html', produits=produits)
+    return render_template('admin/produits.html', produits=produits)
 
 @app.route('/addPublication', methods=['POST'])
 def addPublication():
@@ -193,7 +193,7 @@ def showPublications():
 
 @app.route('/galerie')
 def galerie():
-    return render_template('galerie.html')
+    return render_template('view/galerie.html')
 
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
@@ -208,7 +208,7 @@ def contact():
         return redirect(url_for("contact"))
 
     # Affichez la page de contact si méthode GET
-    return render_template("contact.html")
+    return render_template("view/contact.html")
 
 
 @app.route('/register', methods=['POST'])
@@ -257,7 +257,7 @@ def login():
         flash('Email ou mot de passe incorrect.', 'danger')
         return redirect(url_for('login'))
 
-    return render_template('login.html')
+    return render_template('view/login.html')
 
 @app.route('/admin')
 def admin():
@@ -282,7 +282,7 @@ def admin():
         cur.close()
         conn.close()
 
-    return render_template('admin.html')
+    return render_template('admin/admin.html')
 
 
 @app.route('/logout')
@@ -341,7 +341,7 @@ def user_list():
     cur.close()
     conn.close()
 
-    return render_template('users.html', users=users)
+    return render_template('admin/users.html', users=users)
 
 
 @app.route('/roles')
@@ -352,7 +352,7 @@ def roles():
     users = cur.fetchall()
     cur.close()
     conn.close()
-    return render_template('roles.html', users=users)
+    return render_template('admin/roles.html', users=users)
 
 
 @app.route('/update_role/<int:user_id>', methods=['POST'])
@@ -404,14 +404,14 @@ def dashboard():
     data = list(role_counts.values())
 
     months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    user_data = [150, 300, 200, 250, 400, 350, 380, 300, 320, 220, 350, 330]
+    user_data = [100, 250, 150, 200, 600, 300, 330, 250, 170, 170, 300, 280]
 
     # Ajoute ceci :
     username = session.get("username", "Invité")
     role = session.get("role", "")
 
     return render_template(
-        "dashboard.html",
+        "admin/dashboard.html",
         total_users=total_users,
         role_counts=role_counts,
         months=months,
@@ -432,7 +432,7 @@ def profile():
             'city': 'Paris',
             'avatar': 'https://via.placeholder.com/150'
         }
-        return render_template('profile.html', user=user_info)
+        return render_template('admin/profile.html', user=user_info)
     else:
         flash("Veuillez vous connecter pour accéder au profil.", "warning")
         return redirect(url_for('login'))  # ✅ retour dans tous les cas

@@ -1,0 +1,77 @@
+{% extends "admin/adminLayoute.html" %}
+
+{% block content %}
+  <!-- Main content -->
+  <div id="content" class="container p-4">
+    <h2 class="text-center mb-4">🛒 Liste des Produits Achetés</h2>
+
+    <div class="row mb-3">
+      <div class="col-md-4 ms-auto">
+        <input type="text" id="searchInputProduit" class="form-control" placeholder="🔍 Rechercher un utilisateur..." />
+      </div>
+    </div>    
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped align-middle text-center">
+        <thead class="table-success">
+          <tr>
+            <th>Id produit</th>
+            <th>Nom</th>
+            <th>Prix Unitaire (€)</th>
+            <th>Quantité</th>
+            <th>Email</th>
+            <th>Date d'ajout</th>
+            <th>Montant Total (€)</th>
+            <th>Action</th>
+          </tr>
+        </thead>    
+        <tbody id="userTableBody">
+          {% for produit in produits %}
+            <tr>
+              <td>{{ produit[1] }}</td>
+              <td>{{ produit[2] }}</td>
+              <td>{{ produit[3] }}</td>
+              <td>{{ produit[4] }}</td>
+              <td>{{ produit[5] }}</td>
+              <td>
+                {% if produit[6] %}
+                  {{ produit[6].strftime('%d/%m/%Y %H:%M') }}
+                {% else %}
+                  N/A
+                {% endif %}
+              </td>
+              <td>{{ produit[7] }}</td>
+              <td>
+                <form action="{{ url_for('supprimer_produit') }}" method="POST" style="display:inline;">
+                  <input type="hidden" name="id" value="{{ produit[0] }}">
+                  <button type="submit" class="btn btn-trasparent btn-sm"><i class="bi bi-trash fs-4 text-danger"></i></button>
+                </form>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="8" class="text-center">Aucun produit acheté trouvé.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- Bootstrap JS -->
+<script>
+  document.getElementById("searchInputProduit").addEventListener("keyup", function () {
+    const filter = this.value.toLowerCase();
+    const rows = document.querySelectorAll("table tbody tr"); 
+
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      if (text.includes(filter)) {
+        row.style.display = "";
+      } else {
+        row.style.display = "none";
+      }
+    });
+  });
+</script>
+{% endblock %}

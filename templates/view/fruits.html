@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "view/layout.html" %}
 
 {% block content %}
 <div class="container my-5">
@@ -86,4 +86,57 @@
         <img class="w-100 h-75" src="{{ url_for('static', filename='uploads/image_6.jpg') }}">
     </div>
 </div>
+<!-- Section Our Advantages -->
+<div class="container mt-5 bg-light rounded-1 shadow">
+    <h3 class="text-center mb-4 fw-bold">Our Advantages</h3>
+    <div class="row text-center text-success">
+        <div class="col-md-4 mb-4">
+            <i class="bi bi-lightbulb display-4"></i>
+            <h5 class="mt-2">Creative Ideas</h5>
+            <p>Get ideas for everything from household container gardens to yard landscaping and exterior monitoring services.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <i class="bi bi-brush display-4"></i>
+            <h5 class="mt-2">Decorating</h5>
+            <p>Choose real family lifestyle & the right environment by ideas on decor, plant selection and seasonal beauty.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <i class="bi bi-flower1 display-4"></i>
+            <h5 class="mt-2">Garden Design</h5>
+            <p>Pick your creative garden design or landscaping. From planning to completion, get design help you’ve never seen before.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <i class="bi bi-chat-dots display-4"></i>
+            <h5 class="mt-2">Expert Advice</h5>
+            <p>Thousands of ideas to create your exterior space. Lots of experienced and dedicated experts will surely turn it into reality!</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <i class="bi bi-tag display-4"></i>
+            <h5 class="mt-2">Friendly Prices</h5>
+            <p>Helping you to do more while spending less. Our services mean that it’s affordable for most families. Prices are friendly!</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <i class="bi bi-tree display-4"></i>
+            <h5 class="mt-2">Softscapes</h5>
+            <p>Softscaping is the real opposite of landscaping. It’s the use of living things like turf and plants instead of bricks or concrete.</p>
+        </div>
+    </div>
+  </div>
+
+  <!-- Section Blog Tips -->
+  <div class="container mt-5 text-white">
+    <h4 class="text-center mb-4 fw-bold">See the Tips & Tricks for Gardeners on Our Blog!</h4>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <img src="https://foodmuseum.org.uk/wp-content/uploads/2022/03/Garden-blog-2.jpg" class="img-fluid w-100 h-75 rounded">
+            <h6 class="mt-2 fw-bold">THE LESS CHEMICALS YOU USE, THE BETTER</h6>
+            <p>Compost your garden! Reduce chemical use and let nature do the work. It’s about sustainability and plant health.</p>
+        </div>
+        <div class="col-md-6 mb-3">
+            <img src="https://rockwoodgardenstudios.co.uk/wp-content/uploads/2021/10/love-your-garden-blog.jpg" class="img-fluid w-100 h-75 rounded">
+            <h6 class="mt-2 fw-bold">LOSE YOUR LAWN (OR PART OF IT)</h6>
+            <p>A lawn conversion is a wise move. Reduce water, time, and chemical use. Embrace natural gardening with native plants!</p>
+        </div>
+    </div>
+  </div>
 {% endblock %}

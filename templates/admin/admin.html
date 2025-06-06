@@ -1,0 +1,77 @@
+{% extends "admin/adminLayoute.html" %}
+
+{% block content %}
+<main>
+
+  <!-- Hero section -->
+  <section class="hero">
+    <div>
+      <h1>Bienvenue à Agriculture Shop</h1>
+      <p>Produits agricoles frais, bio et de qualité.</p>
+    </div>
+  </section>
+  <!-- Services -->
+  <section id="services" class="py-5">
+    <div class="container">
+      <h2 class="text-center">Nos Services</h2>
+      <div class="row text-center">
+        <div class="col-md-4">
+          <i class="bi bi-truck fs-1 text-success"></i>
+          <h5 class="mt-3">Livraison Rapide</h5>
+          <p>Recevez vos produits frais à domicile.</p>
+        </div>
+        <div class="col-md-4">
+          <i class="bi bi-award fs-1 text-success"></i>
+          <h5 class="mt-3">Qualité Garantie</h5>
+          <p>Produits cultivés de manière responsable.</p>
+        </div>
+        <div class="col-md-4">
+          <i class="bi bi-phone fs-1 text-success"></i>
+          <h5 class="mt-3">Service Client</h5>
+          <p>Assistance disponible 7j/7 pour vos questions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal de Publication -->
+<div class="modal fade" id="publicationModal" tabindex="-1" aria-labelledby="publicationModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-light w-100">
+      <form method="POST" action="{{ url_for('addPublication') }}" enctype="multipart/form-data">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="publicationModalLabel">Nouvelle publication</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="nomDeProduit" class="form-label">Nom du produit</label>
+            <input type="text" class="form-control" id="nomDeProduit" name="nomDeProduit" required>
+          </div>
+          <div class="mb-3">
+            <label for="categorie" class="form-label">Catégorie</label>
+            <input type="text" class="form-control" id="categorie" name="categorie" required>
+          </div>
+          <div class="mb-3">
+            <label for="prix" class="form-label">Prix (€)</label>
+            <input type="number" step="0.01" class="form-control" id="prix" name="prix" required>
+          </div>
+          <div class="mb-3">
+            <label for="unite" class="form-label">Unité</label>
+            <input type="text" class="form-control" id="unite" name="unite" required>
+          </div>
+          <div class="mb-3">
+            <label for="file" class="form-label">Image</label>
+            <input type="file" class="form-control" id="file" name="file">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Publier</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</main>
+{% endblock %}
