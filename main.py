@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from psycopg2.extras import RealDictCursor
 from datetime import datetime
+from werkzeug.security import check_password_hash
 import psycopg2.extras
 import json
 import psycopg2
@@ -43,6 +44,7 @@ class User(db.Model):
     last_name = db.Column(db.String(100))
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.Text, nullable=False)
+    roles = db.Column(db.String(20))  
 
 
 # --- CREATION DES TABLES ---
@@ -208,18 +210,6 @@ def contact():
     # Affichez la page de contact si méthode GET
     return render_template("contact.html")
 
-@app.route('/admin')
-def admin():
-    conn = get_db_connection()
-    try:
-        cur = conn.cursor()
-        cur.execute("SELECT SUM(prix) FROM legume")
-        result = cur.fetchone()
-        total = result[0] if result[0] is not None else 0
-    finally:
-        cur.close()
-        conn.close()
-    return render_template('admin.html', total=total)
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -242,18 +232,58 @@ def register():
     flash("Inscription réussie. Vous êtes maintenant connecté.", "success")
     return redirect(url_for('index'))
 
-@app.route('/login',  methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    email = request.form.get('email')
-    password = request.form.get('password')
-    user = User.query.filter_by(email=email).first()
-    if user and check_password_hash(user.password, password):
-        session['user_id'] = user.id
-        session['user_name'] = f"{user.first_name} {user.last_name}"
-        flash('Connexion réussie !', 'success')
-        return redirect(url_for('admin'))
-    flash('Email ou mot de passe incorrect.', 'danger')
-    return redirect(url_for('index'))
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        user = User.query.filter_by(email=email).first()
+        if user and check_password_hash(user.password, password):
+            session['user_id'] = user.id
+            session['user_name'] = f"{user.first_name} {user.last_name}"
+            
+            # Corrige ici : 'roles' au lieu de 'role'
+            session['role'] = getattr(user, 'roles', None)
+
+            flash('Connexion réussie !', 'success')
+
+            # Vérifie le rôle en minuscules par sécurité (tu peux adapter)
+            if session['role'] and session['role'].lower() == "admin":
+                return redirect('/admin')
+            else:
+                return redirect(url_for('index'))
+
+        flash('Email ou mot de passe incorrect.', 'danger')
+        return redirect(url_for('login'))
+
+    return render_template('login.html')
+
+@app.route('/admin')
+def admin():
+    # Vérifier si l'utilisateur est connecté
+    if 'user_id' not in session:
+        flash("Veuillez vous connecter pour accéder à cette page.", "warning")
+        return redirect(url_for('login'))
+
+    # Vérifier si l'utilisateur a le rôle Admin
+    if session.get('role', '').lower() != 'admin':
+        flash("Accès réservé aux administrateurs.", "danger")
+        return redirect(url_for('index'))
+
+    # Connexion à la base de données
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT SUM(prix) FROM legume")
+        result = cur.fetchone()
+        total = result[0] if result[0] is not None else 0
+    finally:
+        cur.close()
+        conn.close()
+
+    return render_template('admin.html')
+
 
 @app.route('/logout')
 def logout():
