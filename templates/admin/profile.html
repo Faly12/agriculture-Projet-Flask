@@ -12,7 +12,7 @@
                 <img src="{{ user.avatar }}" class="rounded-circle mb-3" width="120" height="120" alt="Avatar">
                 <h3 class="card-title">{{ user.username }}</h3>
                 <p class="card-text">Email : {{ user.email }}</p>
-                <p class="card-text">Ville : {{ user.city }}</p>
+                <p class="card-text">role : {{ user.role }}</p>
                 <a href="{{ url_for('dashboard') }}" class="btn btn-secondary mt-3">Retour</a>
                 <a href="{{ url_for('logout') }}" class="btn btn-danger mt-3">Se déconnecter</a>
             </div>

@@ -16,6 +16,7 @@ import os
 app = Flask(__name__)
 app.secret_key = "une_cle_secrete_longue_et_complexe"
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Faly@localhost/agriculture'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -428,10 +429,11 @@ def profile():
     if 'username' in session:
         user_info = {
             'username': session['username'],
-            'email': 'faliarisoazaindrasojacharotr@gmail.com',
-            'city': 'Paris',
-            'avatar': 'https://via.placeholder.com/150'
+            'email': session['email'],
+            'Roles': session['role'],
+            'avatar': "{{ url_for('static', filename='uploads/logo.png') }}"
         }
+        flash("Bienvenue ici.", "primary")
         return render_template('admin/profile.html', user=user_info)
     else:
         flash("Veuillez vous connecter pour accéder au profil.", "warning")
