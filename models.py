@@ -1,9 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 
-# --- INITIALISATION SQLALCHEMY ---
 db = SQLAlchemy()
 
-# --- MODELES ---
 class Publication(db.Model):
     __tablename__ = 'publication'
     id = db.Column(db.Integer, primary_key=True)
@@ -20,6 +18,4 @@ class User(db.Model):
     last_name = db.Column(db.String(100))
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.Text, nullable=False)
-    roles = db.Column(db.String(20))  
-
-    db.create_all()
+    roles = db.Column(db.String(20))
