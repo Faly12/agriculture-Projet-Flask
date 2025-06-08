@@ -27,7 +27,7 @@ function updateCartCount() {
     color: white;
   }
   .dark-mode .nav-link {
-    color: rgba(117, 113, 113, 0.82) !important;
+    color: #fff !important;
   }
 `;
 
@@ -48,13 +48,13 @@ function toggleDarkMode() {
     if (paramLink) paramLink.innerHTML = '<i class="bi bi-moon me-2"></i>Mode clair';
   } else {
     localStorage.setItem("theme", "light");
-    if (paramLink) paramLink.innerHTML = '<i class="bi bi-moon me-2"></i>Mode sombre';
+    if (paramLink) paramLink.innerHTML = '<i class="bi bi-moon-fill me-2"></i>Mode sombre';
   }
 }
 
 // 3. Appliquer le thème enregistré au chargement de la page
 window.onload = function () {
-  if (localStorage.getItem("theme") === "dark") {
+  if (localStorage.getItem("theme") === "dark"){
     document.body.classList.add("dark-mode");
     document.querySelectorAll('.navbar, .footer, .card')
       .forEach(el => el.classList.add('dark-mode'));
@@ -101,4 +101,7 @@ $(document).ready(function () {
   });
 
 
-  
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('hidden');
+  }

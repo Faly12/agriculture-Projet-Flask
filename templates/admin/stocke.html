@@ -1,0 +1,59 @@
+{% extends "admin/adminLayoute.html" %}
+
+{% block content %}
+    <div class="container stock">
+        <h1 class="mb-4">Stock de Légumes</h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th><th>Nom</th><th>Prix</th><th>Unité</th><th>Image</th><th>Catégorie</th><th>Date d'ajout</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for l in legumes %}
+                <tr>
+                    <td>{{ l[0] }}</td><td>{{ l[1] }}</td><td>{{ l[2] }}</td><td>{{ l[3] }}</td>
+                    <td><img src="{{ url_for('static', filename='uploads/' + (l[4] or 'default.jpg')) }}" width="50"></td>
+                    <td>{{ l[5] }}</td><td>{{ l[6] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h1 class="mt-5 mb-4">Stock de Graines</h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th><th>Nom</th><th>Catégorie</th><th>Prix</th><th>Unité</th><th>Image</th><th>Date d'ajout</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for g in graines %}
+                <tr>
+                    <td>{{ g[0] }}</td><td>{{ g[1] }}</td><td>{{ g[2] }}</td><td>{{ g[3] }}</td><td>{{ g[4] }}</td>
+                    <td><img src="{{ url_for('static', filename='uploads/' + (g[5] or 'default.jpg')) }}" width="50"></td>
+                    <td>{{ g[6] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h1 class="mt-5 mb-4">Stock de Fruits</h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th><th>Nom</th><th>Catégorie</th><th>Description</th><th>Prix</th><th>Unité</th><th>Image</th><th>Date d'ajout</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for f in fruits %}
+                <tr>
+                    <td>{{ f[0] }}</td><td>{{ f[1] }}</td><td>{{ f[2] }}</td><td>{{ f[3] }}</td><td>{{ f[4] }}</td><td>{{ f[5] }}</td>
+                    <td><img src="{{ url_for('static', filename='uploads/' + (f[6] or 'default.jpg')) }}" width="50"></td>
+                    <td>{{ f[7] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

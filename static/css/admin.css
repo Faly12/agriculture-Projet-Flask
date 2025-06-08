@@ -5,23 +5,31 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f8f9fa;
+  overflow-x: hidden;
 }
-
+.all{
+  margin-left: 1%;
+}
 #sidebar a {
-      display: block; padding: 10px 20px; color: #333; text-decoration: none;
+      display: block;
+      padding: 10px 20px;
+      color: #333;
+      text-decoration: none;
 }
 #sidebar a:hover 
 { 
   background: #d1e7dd;
 }
 .main {
-   margin-left: 220px; padding: 30px;
+  margin-left: 220px;
+  padding: 30px;
  }
-.card-box { box-shadow: 0 0 10px rgba(0,0,0,0.05); border-radius: 12px; 
+.card-box { 
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+   border-radius: 12px; 
 }
 footer{
-  background-color:  #e9f7ef !important;
+  background: #95d3b0 !important;
 }
 .hero {
   height: 50vh;
@@ -41,8 +49,7 @@ li a{
   font-weight: bold;
 }
 .hero p {
-  color: #198754;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
 }
 #sidebar {
   position: fixed;
@@ -52,7 +59,7 @@ li a{
   width: 220px;
   width: 220px; 
   min-height: 100vh;
-  background: #e9f7ef;
+  background: #95d3b0;
   padding-top: 20px;
   padding: 1.5rem;
   color: rgb(7, 7, 7);
@@ -60,6 +67,29 @@ li a{
   display: none; 
   flex-direction: column;
   z-index: 1030;
+}
+#sidebar.hidden {
+  transform: translateX(-100%);
+}
+
+@media (min-width: 868px) {
+  #sidebar {
+    transform: none !important;
+  }
+
+  #menuToggle {
+    display: none;
+  }
+}
+
+#main-content {
+  margin-left: 0;
+}
+
+@media (min-width: 768px) {
+  #main-content {
+    margin-left: 250px;
+  }
 }
 #sidebar h4 {
   color: rgb(0, 0, 0);
@@ -81,20 +111,19 @@ li a{
     margin-left: 220px;
   }
 }
-#content{
-  margin-left: 16%;
-}
 .tableClient{
   margin-left: 16%;
 }
 
-.save{
-  margin-left: 20%;
-}
 
 .sidebar {
-  width: 220px; min-height: 100vh; background: #e9f7ef;
-  position: fixed; left: 0; top: 0; padding-top: 20px;
+  width: 220px;
+  min-height: 100vh;
+  background:  #95d3b0;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding-top: 20px;
 }
 .sidebar a {
   display: block; padding: 10px 20px; color: #333; text-decoration: none;

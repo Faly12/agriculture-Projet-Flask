@@ -17,6 +17,7 @@ app = Flask(__name__)
 app.secret_key = "une_cle_secrete_longue_et_complexe"
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Faly@localhost/agriculture'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -62,11 +63,13 @@ def get_db_connection():
         port='5432'
     )
 
+
+
 # --- ROUTES ---
 @app.route('/')
 def accueil():
     produits = get_all_products()
-    return render_template('view/accueil.html', produits=produits)
+    return render_template('accueil.html', produits=produits)
 
 def get_all_products():
     try:
@@ -146,7 +149,7 @@ def ajouter_panier():
     session['cart_count'] = session.get('cart_count', 0) + 1
     flash("Produit ajouté avec succès")
     session['panier_ajoute'] = True
-    return redirect(url_for('view/accueil'))
+    return redirect(url_for('accueil'))
 
 @app.route('/produits')
 def produits():
@@ -190,7 +193,7 @@ def addPublication():
 @app.route('/publication')
 def showPublications():
     publications = Publication.query.order_by(Publication.id.desc()).all()
-    return render_template('publication.html', publications=publications)
+    return render_template('view/publication.html', publications=publications)
 
 @app.route('/galerie')
 def galerie():
@@ -438,6 +441,26 @@ def profile():
     else:
         flash("Veuillez vous connecter pour accéder au profil.", "warning")
         return redirect(url_for('login'))  # ✅ retour dans tous les cas
+    
+@app.route('/stocke')
+def afficher_stocke():
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute("SELECT * FROM legume ORDER BY id DESC")
+    legumes = cur.fetchall()
+
+    cur.execute("SELECT * FROM graines ORDER BY id DESC")
+    graines = cur.fetchall()
+
+    cur.execute("SELECT * FROM fruits ORDER BY id DESC")
+    fruits = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    return render_template('admin/stocke.html', legumes=legumes, graines=graines, fruits=fruits)
+
     
 # --- LANCEMENT DE L'APPLICATION ---
 if __name__ == '__main__':
